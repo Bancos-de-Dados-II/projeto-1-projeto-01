@@ -6,6 +6,6 @@ export default interface Institution {
     phone: string;
     address: string;
     active: boolean;
-    lattitude: number;
+    latitude: number;
     longitude: number;
 }
