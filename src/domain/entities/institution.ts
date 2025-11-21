@@ -3,7 +3,7 @@ export default interface Institution {
     name: string;
     cnpj: string;
     email: string;
-    telephone: string;
+    phone: string;
     address: string;
     active: boolean;
     lattitude: number;

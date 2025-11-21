@@ -12,3 +12,19 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model institution {
+  id          String   @id @default(uuid())
+  name        String
+  cnpj        String   @unique
+  address     String
+  phone       String
+  email String   @unique
+  active      Boolean  @default(true)
+  latitude    Float
+  longitude   Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("institutions")
+}
