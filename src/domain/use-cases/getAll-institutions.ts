@@ -1,4 +1,4 @@
-import respositoryInstitution from "../../databases/repositories/respository-institution.js";
+import respositoryInstitution from "../../databases/repositories/repository-institution.js";
 
 class GetAllInstitutionsUseCase {
     async execute () {

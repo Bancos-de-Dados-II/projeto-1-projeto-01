@@ -1,6 +1,6 @@
 
 import { PrismaClient } from '@prisma/client';
-import type Institution from '../../domain/entities/Institution.js';
+import type { Institution } from '../../domain/entities/Institution.js';
 
 class RepositoryInstitution {
     private prisma: PrismaClient;

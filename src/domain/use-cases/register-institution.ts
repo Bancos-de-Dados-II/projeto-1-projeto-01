@@ -1,5 +1,5 @@
-import respositoryInstitution from "../../databases/repositories/respository-institution.js";
-import type Institution from "../entities/Institution.js";
+import RepositoryInstitution from "../../databases/repositories/repository-institution.js";
+import type { Institution } from "../entities/Institution.js";
 
 type sucessResponse = {
     status: number,
@@ -13,12 +13,12 @@ type errorResponse = {
 
 class RegisterInstitutionUseCase {
     async execute (institution: Institution): Promise<sucessResponse | errorResponse>  {
-        let institutionAlreadyExists = await respositoryInstitution.findByCnpj(institution.cnpj);
+        let institutionAlreadyExists = await RepositoryInstitution.findByCnpj(institution.cnpj);
         
         if(institutionAlreadyExists){
             return {status: 400, body: {error: 'Instituição já cadastrada'}}
         }
-        respositoryInstitution.register(institution);
+        RepositoryInstitution.register(institution);
         return {status: 201, body: institution}
     }
 }

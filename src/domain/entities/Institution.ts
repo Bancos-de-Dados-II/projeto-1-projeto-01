@@ -1,4 +1,4 @@
-export default interface Institution {
+export type Institution = {
     id: string;
     name: string;
     cnpj: string;
