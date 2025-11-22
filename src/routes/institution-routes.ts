@@ -1,13 +1,10 @@
 import express from 'express';
+import registerInstitutionController from '../controllers/register-institution-controller.js';
+import getAllInstitutionsController from '../controllers/getAll-institutions-controller.js';
 
 const intitutionRoutes = express.Router();
 
-intitutionRoutes.get('/', (req, res) => {
-  res.send('List of institutions');
-});
+intitutionRoutes.get('/', getAllInstitutionsController.handle);
+intitutionRoutes.post('/', registerInstitutionController.handle);
 
-intitutionRoutes.post('/', (req, res) => {
-  res.send('Create a new institution');
-});
-
-export default intitutionRoutes;    
+export default intitutionRoutes;

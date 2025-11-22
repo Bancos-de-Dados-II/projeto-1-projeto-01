@@ -2,7 +2,7 @@ import type {Request, Response} from 'express';
 import type Institution from '../domain/entities/Institution.js';
 import registerInstitutionUseCase from '../domain/use-cases/register-institution.js';
 
-class InstitutionController {
+class RegisterInstitutionController {
   async handle (request: Request, response: Response): Promise<Response> {
     try {
       const institutionData: Institution = request.body;
@@ -25,4 +25,4 @@ class InstitutionController {
   }
 }
 
-export default new InstitutionController();
+export default new RegisterInstitutionController();
