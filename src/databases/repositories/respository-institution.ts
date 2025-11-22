@@ -33,6 +33,12 @@ class RepositoryInstitution {
             where: { name },
         });
     }
+
+    async findByCnpj(cnpj: string): Promise<Institution | null> {
+        return await this.prisma.institution.findFirst({
+            where: { cnpj },
+        });
+    }   
 }
 
 export default new RepositoryInstitution();
