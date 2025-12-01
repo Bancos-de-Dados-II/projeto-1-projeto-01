@@ -1,5 +1,5 @@
 import type {Request, Response} from 'express';
-import type Institution from '../domain/entities/Institution.js';
+import type {Institution}from '../domain/entities/Institution.js';
 import registerInstitutionUseCase from '../domain/use-cases/register-institution.js';
 
 class RegisterInstitutionController {

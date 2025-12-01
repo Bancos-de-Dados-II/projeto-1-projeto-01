@@ -18,7 +18,7 @@ class RegisterInstitutionUseCase {
         if(institutionAlreadyExists){
             return {status: 400, body: {error: 'Instituição já cadastrada'}}
         }
-        RepositoryInstitution.register(institution);
+        await RepositoryInstitution.register(institution);
         return {status: 201, body: institution}
     }
 }
