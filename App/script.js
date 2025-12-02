@@ -10,7 +10,33 @@
             draggable: true,
             icon: icon
         }).addTo(map);
-        
+
+        // Deletar
+        async function deleteInstitution(id, name) {
+    if (!confirm(`Tem certeza que deseja deletar a instituição "${name}"? Esta ação é irreversível.`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/institutions/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.status === 200) {
+            alert('Instituição deletada com sucesso (marcada como inativa)!');
+            location.reload(); 
+        } else if (response.status === 404) {
+            alert('Erro: Instituição não encontrada.');
+        } else {
+            const errorBody = await response.json();
+            alert(`Erro ao deletar: ${errorBody.error || 'Erro desconhecido'}`);
+        }
+    } catch (error) {
+        console.error('Erro de rede ao deletar instituição:', error);
+        alert('Erro de conexão com o servidor ao deletar.');
+    }
+}
+
         map.locate();
         map.on('locationfound', location =>{
             map.setView(location.latlng);
@@ -130,47 +156,56 @@
                 })
         });
 
-        // --- Visualizar instituições registradas ---
-        const btViewInstitutions = document.getElementById('btViewInstitutions');
-        const institutionsList = document.getElementById('institutionsList');
+  // --- Visualizar instituições registradas (FUNÇÃO ATUALIZADA) ---
+const btViewInstitutions = document.getElementById('btViewInstitutions');
+const institutionsList = document.getElementById('institutionsList');
 
-        function renderInstitutions(items){
-            if(!items || items.length === 0){
-                institutionsList.innerHTML = '<div class="inst-item">Nenhuma instituição registrada.</div>';
-                return;
-            }
+function renderInstitutions(items){
+    if(!items || items.length === 0){
+        institutionsList.innerHTML = '<div class="inst-item">Nenhuma instituição registrada.</div>';
+        return;
+    }
 
-            const html = items.map(i => `
-                <div class="inst-item">
-                    <div class="inst-meta">
-                        <b>${i.name}</b>
-                        <small>CNPJ: ${i.cnpj} — ${i.email} — ${i.phone}</small>
-                        <small>${i.address || ''}</small>
-                    </div>
-                    <div class="inst-actions">
-                        <button class="btn-outline" onclick="window.open('https://www.google.com/maps?q=${i.latitude},${i.longitude}','_blank')">Ver mapa</button>
-                    </div>
-                </div>
-            `).join('');
+    const html = items.map(i => `
+        <div class="inst-item">
+            <div class="inst-meta">
+                <b>${i.name}</b>
+                <small>CNPJ: ${i.cnpj} — ${i.email} — ${i.phone}</small>
+                <small>${i.address || ''}</small>
+            </div>
+            <div class="inst-actions">
+                <button 
+                    class="btn-danger" 
+                    onclick="deleteInstitution('${i.id}', '${i.name}')"
+                    aria-label="Deletar ${i.name}"
+                >
+                    Excluir
+                </button>
 
-            institutionsList.innerHTML = html;
-        }
+                <button class="btn-outline" onclick="window.open('http://google.com/maps/search/?api=1&query=${i.latitude},${i.longitude}','_blank')">Ver mapa</button>
+            </div>
+        </div>
+    `).join('');
 
-        btViewInstitutions.onclick = () => {
-            const isHidden = institutionsList.classList.contains('hidden');
-            if(!isHidden){
-                institutionsList.classList.add('hidden');
-                return;
-            }
+    institutionsList.innerHTML = html;
+}
 
-            // buscar e mostrar
-            fetch('http://localhost:3000/institutions')
-                .then(r => r.json())
-                .then(data => {
-                    renderInstitutions(data);
-                    institutionsList.classList.remove('hidden');
-                }).catch(err => {
-                    console.error('Erro ao buscar instituições', err);
-                    alert('Erro ao buscar instituições no servidor');
-                });
-        };
+btViewInstitutions.onclick = () => {
+    const isHidden = institutionsList.classList.contains('hidden');
+    if(!isHidden){
+        institutionsList.classList.add('hidden');
+        return;
+    }
+
+    // buscar e mostrar
+    fetch('http://localhost:3000/institutions')
+        .then(r => r.json())
+        .then(data => {
+            renderInstitutions(data);
+            institutionsList.classList.remove('hidden');
+        }).catch(err => {
+            console.error('Erro ao buscar instituições', err);
+            alert('Erro ao buscar instituições no servidor');
+        });
+};      
+       
