@@ -39,30 +39,27 @@ class RepositoryInstitution {
         });
     }
 
-    // Método para exclusão lógica 
+    // Método para exclusão 
     async delete(id: string): Promise<Institution> {
-        return await this.prisma.institution.update({
+        return await this.prisma.institution.delete({
             where: { id },
-            data: { active: false }, // Marcando como inativo
         });
     }
 
     async getAll(): Promise<Institution[]> {
        
-        return await this.prisma.institution.findMany({
-             where: { active: true } // buscando apenas ativos
-        });
+        return await this.prisma.institution.findMany();
     }
 
     async findByName(name: string): Promise<Institution | null> {
         return await this.prisma.institution.findFirst({ 
-            where: { name, active: true }, // Filtrando por ativo
+            where: {name},
         });
     }
 
     async findByCnpj(cnpj: string): Promise<Institution | null> {
         return await this.prisma.institution.findFirst({
-            where: { cnpj, active: true }, // Filtrando por ativo
+            where: {cnpj}, 
         });
     }   
 }
