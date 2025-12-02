@@ -62,6 +62,14 @@ class RepositoryInstitution {
             where: {cnpj}, 
         });
     }   
+
+    //Método para atualizar instituição
+    async update(id: string, data: Partial<Institution>): Promise<Institution> {
+        return this.prisma.institution.update({
+            where: { id },
+            data,
+        });
+    }
 }
 
 export default new RepositoryInstitution();
