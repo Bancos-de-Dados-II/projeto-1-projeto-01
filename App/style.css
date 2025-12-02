@@ -286,6 +286,7 @@
 }
 
 .btn-danger:hover { 
-    background: var(--danger-600); 
+    background: var(--accent);
+    color: var(--danger);
     transform: translateY(-1px); 
 }
