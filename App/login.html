@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login • SIAPES (Protótipo)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Estilos mínimos para a tela de login (protótipo) */
+    html, body { height:100%; margin:0; padding:0; }
+    .login-page{ display:flex; align-items:center; justify-content:center; height:100vh; background: linear-gradient(180deg,#f8fbff,#f6f9fc); }
+    .login-card{ width:320px; background:var(--surface, #fff); border-radius:12px; padding:22px; box-shadow: 0 10px 30px rgba(2,12,27,0.08); border:1px solid rgba(0,0,0,0.04); }
+    .login-card h2{ margin:0 0 8px 0; font-size:20px; color:var(--text,#263238); text-align:center; }
+    .login-card p.hint{ margin:0 0 16px 0; color:var(--muted,#6b7a86); font-size:13px; text-align:center; }
+    .login-card input{ width:100%; padding:10px 12px; margin-bottom:12px; border-radius:8px; border:1px solid var(--border,#e5e9ef); }
+    .login-card button{ width:100%; padding:10px 12px; border-radius:8px; border:0; background:var(--primary,#003d7a); color:#fff; font-weight:700; cursor:pointer; }
+    .login-card .secondary{ margin-top:10px; text-align:center; font-size:13px; }
+    .login-card .secondary a{ color:var(--primary-700,#003d7a); text-decoration:none; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="login-page">
+    <div class="login-card">
+      <h2>Entrar</h2>
+     
+      <label for="email" style="display:none">Email</label>
+      <input id="email" type="email" placeholder="Email" />
+
+      <label for="password" style="display:none">Senha</label>
+      <input id="password" type="password" placeholder="Senha" />
+
+      <button id="btnLogin">Entrar</button>
+
+      <div class="secondary">
+        <a>Criar uma conta</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('btnLogin').addEventListener('click', function(){
+        window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
