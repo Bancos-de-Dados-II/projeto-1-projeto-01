@@ -1,66 +1,122 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituições - SIAPES</title>
+
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
-    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    
+    <!-- Phosphor Icons (Ícones do menu) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>SIAPES</title>
-
 </head>
-<body>
- 
-<!-- Sidebar -->
-<aside id="sidebar" class="sidebar" aria-label="Barra lateral">
-    <nav>
-        <ul>
-            <li class="tab disabled" aria-disabled="true"><span>Perfil</span></li>
-            <li class="tab active"><a href="index.html">Instituições</a></li>
-        </ul>
-    </nav>
-</aside>
+<body class="dashboard-body">
 
-<div class="container">
-        <div class="top-controls">
-            <button id="btViewInstitutions" aria-label="Visualizar instituições" class="btn-outline">Visualizar instituições Registradas</button>
-        </div>
+    <div class="dashboard-layout">
+        
+        <aside class="dash-sidebar">
+            <div class="sidebar-header">
+                <h2>SIAPES-CZ</h2>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="profile.html" class="menu-item">
+                    <i class="ph ph-squares-four"></i>
+                    <span>Dashboard</span>
+                </a>
 
-        <div id="busca" class="topbar" role="search">
-            <input type="text" placeholder="Digite um local (ex: UFCG Campus Cajazeiras)" id="inputLocal" aria-label="Buscar local">
-            <button id="btBuscar" aria-label="Buscar local">Buscar</button>
-        </div>
+                <a href="#" class="menu-item active">
+                    <i class="ph ph-map-trifold"></i>
+                    <span>Instituições</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="ph ph-users"></i>
+                    <span>Usuários</span>
+                </a>
+            </nav>
 
-         <div id="institutionsList" class="institutions-list hidden" aria-live="polite"></div> 
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <small>Conectado como:</small>
+                    <strong>Admin</strong>
+                    <span class="role">Administrador (TI)</span>
+                </div>
+                <a href="login.html" class="logout-btn">
+                    <i class="ph ph-sign-out"></i>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
 
-        <div class="content">
-            <div class="map-column">
-                <div id="map" aria-label="Mapa Leaflet"></div>
+        <!-- Conteúdo Principal -->
+        <main class="dash-content">
+            
+            <!-- Header da Página -->
+            <header class="dash-header">
+                <h1>Cadastrar Instituições</h1>
+                <div class="top-controls">
+                    <button id="btViewInstitutions" class="btn-outline" style="background: white;">
+                        <i class="ph ph-list-bullets" style="vertical-align: middle; margin-right: 5px;"></i>
+                        Visualizar Instituições Registradas
+                    </button>
+                </div>
+            </header>
+
+            <div id="busca" role="search" style="margin: 0 0 20px 0;">
+                <input type="text" placeholder="Busque no mapa o nome da instituição que deseja cadastrar. (ex: UFCG Campus Cajazeiras)" id="inputLocal" aria-label="Buscar local">
+                <button id="btBuscar" aria-label="Buscar local">Buscar</button>
             </div>
 
-            <div id="form" class="form-card hidden" aria-labelledby="titulo-form">
-                <h2 id="titulo-form">Adicionar Instituicao</h2>
-                <div class="hint">Preencha os campos e clique em Adicionar para salvar seu ponto atual do mapa.</div>
+            <!-- Lista de Instituições (Oculta por padrão) -->
+            <div id="institutionsList" class="institutions-list hidden" aria-live="polite"></div>  
+           
+            <!-- Área do Mapa e Formulário -->
+            <div class="content">
+                <div class="map-column">
+                    <div id="map" aria-label="Mapa Leaflet" style="height: 65vh;"></div>
+                </div>
 
-                <input type="text" id="inputNome" placeholder="Nome">
-                <input type="text" id="inputCnpj" placeholder="CNPJ">
-                <input type="text" id="inputEmail" placeholder="Email">
-                <input type="text" id="inputPhone" placeholder="Telefone">
-                <input type="text" id="inputAddress" placeholder="Endereço">
-                <div class="actions">
-                    <button id="btAdicionar" class="btn-primary">Adicionar</button>
+                <!-- Formulário (Mantendo ID #form para o JS funcionar) -->
+                <div id="form" class="form-card hidden" aria-labelledby="titulo-form">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <h2 id="titulo-form">Adicionar Instituição</h2>
+                        <!-- Botãozinho para fechar form se quiser implementar depois -->
+                        <i class="ph ph-x" style="cursor:pointer; opacity:0.5;"></i>
+                    </div>
+                    <div class="hint">Preencha os campos para salvar o ponto marcado.</div>
+
+                    <input type="text" id="inputNome" placeholder="Nome da Instituição">
+                    <input type="text" id="inputCnpj" placeholder="CNPJ">
+                    <input type="text" id="inputEmail" placeholder="Email de contato">
+                    <input type="text" id="inputPhone" placeholder="Telefone">
+                    <input type="text" id="inputAddress" placeholder="Endereço completo">
+                    
+                    <div class="actions">
+                        <button id="btAdicionar" class="btn-primary">Confirmar Cadastro</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Botão fixo de confirmação de local -->
-        <button id="btConfirmLocation" class="confirm-location-btn">Confirmar local</button>
-</div>
+            <!-- Botão fixo de confirmação de local -->
+            <button id="btConfirmLocation" class="confirm-location-btn">
+                <i class="ph ph-map-pin" style="margin-right:8px; font-size: 18px; vertical-align: text-bottom;"></i>
+                Confirmar local
+            </button>
+
+        </main>
+    </div>
+
     <script src="script.js" defer></script>
 </body>
 </html>
