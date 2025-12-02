@@ -262,3 +262,30 @@
         .inst-meta small{ color: var(--muted); display: block; font-size: 13px; }
 
         .institutions-list .inst-actions{ white-space: nowrap; }
+
+        /* Botão de Exclusão */
+
+/* Ajustar o contêiner de ações da lista para botões menores na lista */
+.institutions-list .inst-actions button {
+    padding: 8px 12px;
+    font-size: 13px; 
+}
+
+/* Estilo do botão de Exclusão */
+.btn-danger {
+    background: var(--danger);
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .06s ease, background .2s ease;
+    box-shadow: var(--shadow);
+    font-size: 13px; 
+}
+
+.btn-danger:hover { 
+    background: var(--danger-600); 
+    transform: translateY(-1px); 
+}
