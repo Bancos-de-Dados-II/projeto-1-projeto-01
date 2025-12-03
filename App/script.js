@@ -243,7 +243,7 @@ function renderInstitutions(items){
                     Deletar Cadastro
                 </button>
 
-                <button class="btn-outline" onclick="window.open('http://google.com/maps/search/?api=1&query=${i.latitude},${i.longitude}','_blank')">Ver mapa</button>
+                <button class="btn-outline" onclick="window.open('http://google.com/maps/search/?api=1&query=${i.latitude},${i.longitude}','_blank')">Google maps</button>
                 <button class="btn-outline" onclick="editInstitution('${i.id}')">Editar</button>
             </div>
         </div>

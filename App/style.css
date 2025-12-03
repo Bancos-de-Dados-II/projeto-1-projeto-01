@@ -49,7 +49,7 @@
             color: var(--primary-700);
             padding: 8px 12px;
         }
-
+        
         /* Sidebar (full-height, azul escuro) */
         .sidebar{
             position: fixed;
@@ -195,7 +195,6 @@
             display: none;
         }
 
-        /* modal removed: using fixed confirm button instead */
 
         /* Botão fixo de confirmação de local */
         .confirm-location-btn {
@@ -287,4 +286,3 @@
     color: var(--danger);
     transform: translateY(-1px); 
 }
-
