@@ -23,7 +23,7 @@
         });
 
         if (response.status === 200) {
-            alert('Instituição deletada com sucesso (marcada como inativa)!');
+            alert('Instituição deletada com sucesso!');
             location.reload(); 
         } else if (response.status === 404) {
             alert('Erro: Instituição não encontrada.');
@@ -174,7 +174,6 @@ async function editInstitution(id) {
             enableFormInputs();
         };
 
-        // Note: modal removed — confirmation happens via fixed button only
 
         // Adicionar instituição
         botaoAdicionar.onclick = () =>{
@@ -219,7 +218,6 @@ async function editInstitution(id) {
                 })
         });
 
-  // --- Visualizar instituições registradas (FUNÇÃO ATUALIZADA) ---
 const btViewInstitutions = document.getElementById('btViewInstitutions');
 const institutionsList = document.getElementById('institutionsList');
 
@@ -242,7 +240,7 @@ function renderInstitutions(items){
                     onclick="deleteInstitution('${i.id}', '${i.name}')"
                     aria-label="Deletar ${i.name}"
                 >
-                    Excluir
+                    Deletar Cadastro
                 </button>
 
                 <button class="btn-outline" onclick="window.open('http://google.com/maps/search/?api=1&query=${i.latitude},${i.longitude}','_blank')">Ver mapa</button>
@@ -271,5 +269,35 @@ btViewInstitutions.onclick = () => {
             console.error('Erro ao buscar instituições', err);
             alert('Erro ao buscar instituições no servidor');
         });
-};      
+};     
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. Pegar os elementos
+    const modal = document.getElementById('modalOverlay');
+    const btnAbrir = document.getElementById('btViewInstitutions');
+    const btnFechar = document.getElementById('btCloseModal');
+
+    // 2. Função para Abrir
+    btnAbrir.addEventListener('click', () => {
+        // Se você tiver uma função que carrega a lista (ex: renderList()), chame ela aqui:
+        // renderList(); 
+        
+        modal.classList.remove('hidden'); // Remove a classe que esconde
+    });
+
+    // 3. Função para Fechar (Clicando no X)
+    btnFechar.addEventListener('click', () => {
+        modal.classList.add('hidden'); // Adiciona a classe que esconde
+    });
+
+    // 4. Fechar ao clicar fora da caixa branca (UX melhor)
+    modal.addEventListener('click', (evento) => {
+        if (evento.target === modal) { // Se clicou no fundo escuro, e não na caixa
+            modal.classList.add('hidden');
+        }
+    });
+    
+
+});
        

@@ -1,5 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 import type { Institution } from '../../domain/entities/Institution.js';
+import crypto from 'node:crypto';
+
+// Interface auxiliar para tipar o retorno do banco antes de converter
+interface InstitutionRaw extends Omit<Institution, 'latitude' | 'longitude'> {
+    latitude: number;
+    longitude: number;  
+}
 
 class RepositoryInstitution {
     private prisma: PrismaClient;
@@ -8,69 +15,146 @@ class RepositoryInstitution {
         this.prisma = new PrismaClient();
     }
 
-    // Método para buscar pelo ID
+    private getSelectQuery() {
+        return `
+            SELECT 
+                id, 
+                name, 
+                cnpj, 
+                email, 
+                phone, 
+                address, 
+
+                "createdAt", 
+                "updatedAt",
+                ST_Y(location::geometry) as latitude, 
+                ST_X(location::geometry) as longitude 
+            FROM "institutions"
+        `;
+    }
+
     async findById(id: string): Promise<Institution | null> {
-        return await this.prisma.institution.findUnique({
-            where: { id },
-        });
+        const result = await this.prisma.$queryRawUnsafe<InstitutionRaw[]>(
+            `${this.getSelectQuery()} WHERE id = $1 LIMIT 1`, 
+            id
+        );
+        return result[0] || null;
     }
     
-    // Método para buscar pelo Email 
     async findByEmail(email: string): Promise<Institution | null> {
-        return await this.prisma.institution.findFirst({
-            where: { email },
-        });
+        const result = await this.prisma.$queryRawUnsafe<InstitutionRaw[]>(
+            `${this.getSelectQuery()} WHERE email = $1 LIMIT 1`, 
+            email
+        );
+        return result[0] || null;
     }
 
-    // Método para registrar e retornar a Institution completa
     async register(institution: Omit<Institution, 'id'>): Promise<Institution> {
+        const id = crypto.randomUUID(); 
         
-        return await this.prisma.institution.create({
-            data: {
-                name: institution.name,
-                cnpj: institution.cnpj,
-                email: institution.email,
-                phone: institution.phone,
-                address: institution.address,
-                active: institution.active,
-                latitude: institution.latitude,
-                longitude: institution.longitude,
-            },
-        });
+        await this.prisma.$executeRaw`
+            INSERT INTO "institutions" (
+                id, name, cnpj, email, phone, address, 
+                "createdAt", "updatedAt", location
+            )
+            VALUES (
+                ${id}, 
+                ${institution.name}, 
+                ${institution.cnpj}, 
+                ${institution.email}, 
+                ${institution.phone}, 
+                ${institution.address}, 
+                NOW(),
+                NOW(),
+                ST_SetSRID(ST_MakePoint(${institution.longitude}, ${institution.latitude}), 4326)
+            );
+        `;
+
+        return { id, ...institution };
     }
 
-    // Método para exclusão 
-    async delete(id: string): Promise<Institution> {
-        return await this.prisma.institution.delete({
-            where: { id },
-        });
+    async update(institution: Institution): Promise<Institution> {
+        const result = await this.prisma.$queryRaw<InstitutionRaw[]>`
+            UPDATE "institutions"
+            SET 
+                name = ${institution.name},
+                cnpj = ${institution.cnpj},
+                email = ${institution.email},
+                phone = ${institution.phone},
+                address = ${institution.address},
+                
+                "updatedAt" = NOW(), 
+                location = ST_SetSRID(ST_MakePoint(${institution.longitude}, ${institution.latitude}), 4326)
+            WHERE id = ${institution.id}
+            RETURNING 
+                id, 
+                name, 
+                cnpj, 
+                email, 
+                phone, 
+                address, 
+                
+                "createdAt",
+                "updatedAt",
+                ST_Y(location::geometry) as latitude, 
+                ST_X(location::geometry) as longitude
+        `;
+
+        const updatedInstitution = result[0];
+
+        if (!updatedInstitution) {
+            throw new Error("Instituição não encontrada para atualização.");
+        }
+
+        return updatedInstitution;
     }
 
     async getAll(): Promise<Institution[]> {
-       
-        return await this.prisma.institution.findMany();
+        return await this.prisma.$queryRawUnsafe<InstitutionRaw[]>(
+            `${this.getSelectQuery()}`
+        );
     }
 
     async findByName(name: string): Promise<Institution | null> {
-        return await this.prisma.institution.findFirst({ 
-            where: {name},
-        });
+        const result = await this.prisma.$queryRawUnsafe<InstitutionRaw[]>(
+            `${this.getSelectQuery()} WHERE name = $1`,
+            name
+        );
+        return result[0] || null;
     }
 
     async findByCnpj(cnpj: string): Promise<Institution | null> {
-        return await this.prisma.institution.findFirst({
-            where: {cnpj}, 
-        });
-    }   
+        const result = await this.prisma.$queryRawUnsafe<InstitutionRaw[]>(
+            `${this.getSelectQuery()} WHERE cnpj = $1 LIMIT 1`,
+            cnpj
+        );
+        return result[0] || null;
+    } 
 
-    //Método para atualizar instituição
-    async update(id: string, data: Partial<Institution>): Promise<Institution> {
-        return this.prisma.institution.update({
-            where: { id },
-            data,
-        });
+    async delete(id: string): Promise<Institution> {
+        const result = await this.prisma.$queryRawUnsafe<InstitutionRaw[]>(
+            `DELETE FROM "institutions" 
+             WHERE id = $1 
+             RETURNING 
+                id, 
+                name, 
+                cnpj, 
+                email, 
+                phone, 
+                address, 
+                ST_Y(location::geometry) as latitude, 
+                ST_X(location::geometry) as longitude`,
+            id
+        );
+
+        const deletedInstitution = result[0];
+
+        if (!deletedInstitution) {
+            throw new Error("Instituição não encontrada para exclusão.");
+        }
+
+        return deletedInstitution;
     }
 }
 
 export default new RepositoryInstitution();
-

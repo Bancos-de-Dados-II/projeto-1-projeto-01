@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard • SIAPES</title>
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body class="dashboard-body">
+
+    <div class="dashboard-layout">
+        
+        <!-- Sidebar estilo Dashboard -->
+        <aside class="dash-sidebar">
+            <div class="sidebar-header">
+                <h2>SIAPES-CZ</h2>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active">
+                    <i class="ph ph-squares-four"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="index.html" class="menu-item">
+                    <i class="ph ph-map-trifold"></i>
+                    <span>Instituições</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="ph ph-users"></i>
+                    <span>Usuários</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <small>Conectado como:</small>
+                    <strong>Admin 123</strong>
+                    <span class="role">Administrador (TI)</span>
+                </div>
+                <a href="login.html" class="logout-btn">
+                    <i class="ph ph-sign-out"></i>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="dash-content">
+            
+            <!-- Header Simples -->
+            <header class="dash-header">
+                <h1>Dashboard</h1>
+                <button class="icon-btn"><i class="ph ph-gear"></i></button>
+            </header>
+
+            <!-- Boas Vindas -->
+            <section class="welcome-section">
+                <h2>Bem-vindo, Admin 123!</h2>
+                <p>Perfil: Administrador (TI)</p>
+            </section>
+
+            <!-- Cards de Estatísticas -->
+            <section class="stats-grid">
+                <!-- Card 1 -->
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <span>Total de Usuários</span>
+                        <h3>80</h3>
+                    </div>
+                    <div class="stat-icon bg-blue">
+                        <i class="ph ph-users-three"></i>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <span>Preceptores Ativos</span>
+                        <h3>24</h3>
+                    </div>
+                    <div class="stat-icon bg-green">
+                        <i class="ph ph-chalkboard-teacher"></i>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <span>Instituições Parceiras</span>
+                        <h3>8</h3>
+                    </div>
+                    <div class="stat-icon bg-purple">
+                        <i class="ph ph-buildings"></i>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <span>Discentes Ativos</span>
+                        <h3>40</h3> 
+                    </div>
+                    <div class="stat-icon bg-teal">
+                        <i class="ph ph-student"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção Inferior -->
+            <section class="info-grid">
+                
+                <!-- Atividades Recentes -->
+                <div class="card recent-activity">
+                    <div class="card-header">
+                        <h3>Atividades Recentes</h3>
+                        <p>Últimas atualizações do sistema</p>
+                    </div>
+                    
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="icon-indicator warning"><i class="ph ph-clock"></i></div>
+                            <div class="activity-details">
+                                <strong>Nova solicitação de vaga</strong>
+                                <small>2 horas atrás</small>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="icon-indicator success"><i class="ph ph-check-circle"></i></div>
+                            <div class="activity-details">
+                                <strong>Solicitação aprovada - UFPB</strong>
+                                <small>5 horas atrás</small>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="icon-indicator info"><i class="ph ph-file-text"></i></div>
+                            <div class="activity-details">
+                                <strong>Roteiro de Cardiologia atualizado</strong>
+                                <small>1 dia atrás</small>
+                            </div>
+                        </div>
+
+                        <div class="activity-item">
+                            <div class="icon-indicator info"><i class="ph ph-user-plus"></i></div>
+                            <div class="activity-details">
+                                <strong>Novo discente alocado</strong>
+                                <small>2 dias atrás</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Próximas Atividades -->
+                <div class="card upcoming-events">
+                    <div class="card-header">
+                        <h3>Próximas Atividades</h3>
+                        <p>Agenda e compromissos</p>
+                    </div>
+
+                    <div class="event-list">
+                        <!-- Evento 1 -->
+                        <div class="event-item">
+                            <div class="date-box">
+                                <span class="day">25</span>
+                                <span class="month">10</span>
+                            </div>
+                            <div class="event-details">
+                                <strong>Avaliação de discentes - Cardiologia</strong>
+                                <small>14:00</small>
+                            </div>
+                        </div>
+
+                        <!-- Evento 2 -->
+                        <div class="event-item">
+                            <div class="date-box">
+                                <span class="day">27</span>
+                                <span class="month">10</span>
+                            </div>
+                            <div class="event-details">
+                                <strong>Reunião de preceptores</strong>
+                                <small>10:00</small>
+                            </div>
+                        </div>
+
+                        <!-- Evento 3 -->
+                        <div class="event-item">
+                            <div class="date-box">
+                                <span class="day">30</span>
+                                <span class="month">10</span>
+                            </div>
+                            <div class="event-details">
+                                <strong>Fim do período de estágio - Turma A</strong>
+                                <small>18:00</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+</body>
+</html>

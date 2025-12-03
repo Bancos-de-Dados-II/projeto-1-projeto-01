@@ -14,31 +14,36 @@ class UpdateInstitutionUseCase {
     async execute(id: string, data: Partial<Institution>): 
         Promise<SuccessResponse | ErrorResponse> 
     {
-        //Verificando se a instituição existe
-        const institution = await RepositoryInstitution.findById(id);
 
-        if (!institution) {
+        const currentInstitution = await RepositoryInstitution.findById(id);
+
+        if (!currentInstitution) {
             return { status: 404, body: { error: "Instituição não encontrada." } };
         }
 
-        // Verificando se está inativa
-        if (!institution.active) {
-            return { status: 400, body: { error: "Instituição está inativa e não pode ser atualizada." } };
-        }
-
-        //Verificando duplicidade de CNPJ
-        if (data.cnpj && data.cnpj !== institution.cnpj) {
+        if (data.cnpj && data.cnpj !== currentInstitution.cnpj) {
             const exists = await RepositoryInstitution.findByCnpj(data.cnpj);
-            if (exists) {
-                return { status: 400, body: { error: "Já existe outra instituição com esse CNPJ." } };
+            if (exists && exists.id !== id) {
+                return { status: 400, body: { error: "CNPJ já em uso." } };
             }
         }
 
-        // Atualizando
-        const updated = await RepositoryInstitution.update(id, data);
-
-        return { status: 200, body: updated };
+        const institutionToUpdate: Institution = {
+            ...currentInstitution, 
+            ...data,               
+            id: id,                
+            
+            latitude: data.latitude !== undefined ? Number(data.latitude) : currentInstitution.latitude,
+            longitude: data.longitude !== undefined ? Number(data.longitude) : currentInstitution.longitude,
+        };
+        try {
+            const updated = await RepositoryInstitution.update(institutionToUpdate);
+            console.log("Sucesso no Update:", updated);
+            return { status: 200, body: updated };
+        } catch (error) {
+            console.error("ERRO NO UPDATE:", error);
+            return { status: 500, body: { error: "Erro interno ao atualizar." } };
+        }
     }
 }
-
 export default new UpdateInstitutionUseCase();
