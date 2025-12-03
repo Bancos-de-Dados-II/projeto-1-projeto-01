@@ -7,11 +7,15 @@
 generator client {
   provider = "prisma-client-js"
   engineType = "library"
+  previewFeatures = ["postgresqlExtensions"]
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
   url = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  extensions = [postgis]
 }
 
 model institution {
@@ -22,8 +26,7 @@ model institution {
   phone       String
   email String   @unique
   active      Boolean  @default(true)
-  latitude    Float
-  longitude   Float
+  location    Unsupported("geometry(Point, 4326)")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
