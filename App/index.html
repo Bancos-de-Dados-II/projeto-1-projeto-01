@@ -64,7 +64,7 @@
             
             <!-- Header da Página -->
             <header class="dash-header">
-                <h1>Cadastrar Instituições</h1>
+                <h1>Cadastro de instituições parceiras</h1>
                 <div class="top-controls">
                     <button id="btViewInstitutions" class="btn-outline" style="background: white;">
                         <i class="ph ph-list-bullets" style="vertical-align: middle; margin-right: 5px;"></i>
@@ -118,5 +118,25 @@
     </div>
 
     <script src="script.js" defer></script>
+    <script src="https://unpkg.com/imask"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    
+            // --- 1. Máscara para CNPJ ---
+            const cnpjInput = document.getElementById('inputCnpj');
+            IMask(cnpjInput, {
+                mask: '00.000.000/0000-00'
+            });
+
+            // --- 2. Máscara para Telefone (Celular e Fixo) ---
+            const phoneInput = document.getElementById('inputPhone');
+            IMask(phoneInput, {
+                mask: [
+                    { mask: '(00) 0000-0000' },   // Fixo
+                    { mask: '(00) 00000-0000' }   // Celular
+                ]
+            });
+        });
+    </script>
 </body>
 </html>
