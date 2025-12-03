@@ -233,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.add('hidden');
         }
     });
+    
 
 });
        

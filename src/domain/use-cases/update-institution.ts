@@ -38,7 +38,7 @@ class UpdateInstitutionUseCase {
         };
         try {
             const updated = await RepositoryInstitution.update(institutionToUpdate);
-            console.log("4. Sucesso no Update:", updated);
+            console.log("Sucesso no Update:", updated);
             return { status: 200, body: updated };
         } catch (error) {
             console.error("ERRO NO UPDATE:", error);
