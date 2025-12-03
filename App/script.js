@@ -37,6 +37,69 @@
     }
 }
 
+// Botão editar 
+async function editInstitution(id) {
+
+    try {
+        const response = await fetch(`http://localhost:3000/institutions/${id}`);
+
+        if (!response.ok) {
+            alert("Instituição não encontrada.");
+            return;
+        }
+
+        const inst = await response.json();
+
+        formCard.classList.remove('hidden');
+        enableFormInputs();
+
+        document.getElementById('titulo-form').innerText = "Editar Instituição";
+        document.getElementById('inputNome').value = inst.name;
+        document.getElementById('inputCnpj').value = inst.cnpj;
+        document.getElementById('inputEmail').value = inst.email;
+        document.getElementById('inputPhone').value = inst.phone;
+        document.getElementById('inputAddress').value = inst.address;
+
+        // Mover marker
+        marker.setLatLng([inst.latitude, inst.longitude]);
+        map.setView([inst.latitude, inst.longitude], 15);
+
+        botaoAdicionar.innerText = "Salvar Alterações";
+
+        botaoAdicionar.onclick = null;
+
+        botaoAdicionar.onclick = async () => {
+            const updatedInst = {
+                name: document.getElementById('inputNome').value,
+                cnpj: document.getElementById('inputCnpj').value,
+                email: document.getElementById('inputEmail').value,
+                phone: document.getElementById('inputPhone').value,
+                address: document.getElementById('inputAddress').value,
+                latitude: marker.getLatLng().lat,
+                longitude: marker.getLatLng().lng
+            };
+
+            const updateResponse = await fetch(`http://localhost:3000/institutions/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedInst)
+            });
+
+            if (updateResponse.ok) {
+                alert("Instituição atualizada com sucesso!");
+                location.reload();
+            } else {
+                const err = await updateResponse.json();
+                alert("Erro ao salvar: " + (err.error || "Desconhecido"));
+            }
+        };
+
+    } catch (error) {
+        console.error(error);
+        alert("Erro ao carregar dados da instituição.");
+    }
+}
+
         map.locate();
         map.on('locationfound', location =>{
             map.setView(location.latlng);
@@ -183,6 +246,7 @@ function renderInstitutions(items){
                 </button>
 
                 <button class="btn-outline" onclick="window.open('http://google.com/maps/search/?api=1&query=${i.latitude},${i.longitude}','_blank')">Ver mapa</button>
+                <button class="btn-outline" onclick="editInstitution('${i.id}')">Editar</button>
             </div>
         </div>
     `).join('');
