@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import type { Institution } from '../../domain/entities/Institution.js';
+import crypto from 'node:crypto';
 
 // Interface auxiliar para tipar o retorno do banco antes de converter
 interface InstitutionRaw extends Omit<Institution, 'latitude' | 'longitude'> {
@@ -69,7 +70,6 @@ class RepositoryInstitution {
             );
         `;
 
-        // Retornamos o objeto com o ID gerado
         return { id, ...institution };
     }
 
