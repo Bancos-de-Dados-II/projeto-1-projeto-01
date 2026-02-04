@@ -190,6 +190,18 @@
         }
         .btn-outline:hover{ background: var(--primary-700); color: #fff; transform: translateY(-1px); }
 
+        .top-controls .btn-outline:hover, 
+        .btn-outline:hover {
+        background: var(--primary-700) !important;
+        color: #ffffff !important;
+        }
+
+        .btn-danger:hover { 
+            background: #c55d43; /* Um tom mais escuro de vermelho */
+            color: #fff;
+            transform: translateY(-1px); 
+        }
+
         /* Formulário oculto por padrão */
         .form-card.hidden {
             display: none;
@@ -241,6 +253,10 @@
             box-shadow: var(--shadow);
             max-height: 240px;
             overflow: auto;
+        }
+
+        .hidden {
+            display: none !important;
         }
 
         .institutions-list .inst-item{
