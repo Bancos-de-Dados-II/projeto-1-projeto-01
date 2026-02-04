@@ -5,7 +5,7 @@ export type Institution = {
     email: string;
     phone: string;
     address: string;
-   // active: boolean;
+    active: boolean;
     latitude: number;
     longitude: number;
 }
