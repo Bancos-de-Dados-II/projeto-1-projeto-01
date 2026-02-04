@@ -2,7 +2,7 @@ import express from 'express';
 import institutionRoutes from './routes/institution-routes.js';
 import cors from 'cors';
 import mongoose from 'mongoose'; 
-import 'dotenv/config';          
+import 'dotenv/config';    
 
 const server = express();
 const port = process.env.PORT || 3333; 

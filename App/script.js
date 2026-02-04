@@ -18,7 +18,7 @@
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/institutions/${id}`, {
+        const response = await fetch(`http://localhost:3333/institution/${id}`, {
             method: 'DELETE',
         });
 
@@ -41,7 +41,7 @@
 async function editInstitution(id) {
 
     try {
-        const response = await fetch(`http://localhost:3000/institutions/${id}`);
+        const response = await fetch(`http://localhost:3333/institution/${id}`);
 
         if (!response.ok) {
             alert("Instituição não encontrada.");
@@ -79,7 +79,7 @@ async function editInstitution(id) {
                 longitude: marker.getLatLng().lng
             };
 
-            const updateResponse = await fetch(`http://localhost:3000/institutions/${id}`, {
+            const updateResponse = await fetch(`http://localhost:3333/institution/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updatedInst)
@@ -186,7 +186,7 @@ async function editInstitution(id) {
                 latitude: marker.getLatLng().lat,
                 longitude: marker.getLatLng().lng   
             }
-            fetch('http://localhost:3000/institutions',{
+            fetch('http://localhost:3333/institution',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -201,7 +201,7 @@ async function editInstitution(id) {
         }
 
         map.on('load', () => {
-            fetch('http://localhost:3000/institutions')
+            fetch('http://localhost:3333/institution')
                 .then(response => response.json())
                 .then(data => {
                     for(let i of data){
@@ -260,7 +260,7 @@ btViewInstitutions.onclick = () => {
     }
 
     // buscar e mostrar
-    fetch('http://localhost:3000/institutions')
+    fetch('http://localhost:3333/institution')
         .then(r => r.json())
         .then(data => {
             renderInstitutions(data);
