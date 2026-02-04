@@ -3,6 +3,7 @@ import institutionRoutes from './routes/institution-routes.js';
 import cors from 'cors';
 import mongoose from 'mongoose'; 
 import 'dotenv/config';    
+import { errorHandler } from './middlewares/error-handler.js';
 
 const server = express();
 const port = process.env.PORT || 3333; 
@@ -11,6 +12,8 @@ server.use(express.json());
 server.use(cors());
 
 server.use('/institution', institutionRoutes);
+
+server.use(errorHandler);
 
 const mongoUri = process.env.MONGO_URL;
 

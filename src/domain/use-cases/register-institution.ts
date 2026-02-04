@@ -1,26 +1,24 @@
 import RepositoryInstitution from "../../databases/repositories/repository-institution.js";
 import type { Institution } from "../entities/Institution.js";
+import { AppError } from "../../errors/app-error.js";
 
-type sucessResponse = {
-    status: number,
-    body: Institution
-}
-
-type errorResponse = {
-    status: number,
-    body: {error: string}
-}
+type CreateInstitution = Omit<Institution, 'id'>;
 
 class RegisterInstitutionUseCase {
-    async execute (institution: Institution): Promise<sucessResponse | errorResponse>  {
-        let institutionAlreadyExists = await RepositoryInstitution.findByCnpj(institution.cnpj);
-        
-        if(institutionAlreadyExists){
-            return {status: 400, body: {error: 'Instituição já cadastrada'}}
-        }
-        await RepositoryInstitution.register(institution);
-        return {status: 201, body: institution}
+  async execute(institution: CreateInstitution): Promise<Institution> {
+
+    const institutionAlreadyExists =
+      await RepositoryInstitution.findByCnpj(institution.cnpj);
+
+    if (institutionAlreadyExists) {
+      throw new AppError("Instituição já cadastrada", 409);
     }
+
+    const createdInstitution =
+      await RepositoryInstitution.register(institution);
+
+    return createdInstitution;
+  }
 }
 
-export default new RegisterInstitutionUseCase();   
+export default new RegisterInstitutionUseCase();

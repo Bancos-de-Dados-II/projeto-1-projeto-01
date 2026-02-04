@@ -1,27 +1,23 @@
-import type {Request, Response} from 'express';
-import type {Institution}from '../domain/entities/Institution.js';
+import type { Request, Response } from 'express';
+import type { CreateInstitutionDTO } from '../validators/institution-schema.js';
 import registerInstitutionUseCase from '../domain/use-cases/register-institution.js';
 
 class RegisterInstitutionController {
-  async handle (request: Request, response: Response): Promise<Response> {
-    try {
-      const institutionData: Institution = request.body;
+  async handle(request: Request, response: Response): Promise<Response> {
+    const data = request.body as CreateInstitutionDTO;
 
-      // Validação de dados obrigatórios
-      if (!institutionData.cnpj) {
-        return response.status(400).json({ error: "CNPJ é obrigatório" });
-      }
+    const institution = await registerInstitutionUseCase.execute({
+      name: data.name,
+      cnpj: data.cnpj,
+      email: data.email,
+      phone: data.phone,
+      address: data.address,
+      active: data.active ?? true,
+      latitude: data.latitude,
+      longitude: data.longitude,
+    });
 
-      const result = await registerInstitutionUseCase.execute(institutionData);
-
-      return response.status(result.status).json(result.body);
-
-    } catch (error) {
-      console.error("Erro no controller de instituição:", error);
-      return response.status(500).json({ 
-        error: "Erro interno do servidor ao cadastrar instituição" 
-      });
-    }
+    return response.status(201).json(institution);
   }
 }
 
