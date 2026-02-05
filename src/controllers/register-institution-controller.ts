@@ -1,27 +1,20 @@
-import type {Request, Response} from 'express';
-import type {Institution}from '../domain/entities/Institution.js';
-import registerInstitutionUseCase from '../domain/use-cases/register-institution.js';
+import type { Request, Response } from "express";
+import registerInstitutionUseCase from "../domain/use-cases/register-institution.js";
+import { validateZodCreateInstitution } from "../service/zodvalidations.js";
+import { AppErrorsZod } from "../errors/errorsZod.js";
 
 class RegisterInstitutionController {
-  async handle (request: Request, response: Response): Promise<Response> {
-    try {
-      const institutionData: Institution = request.body;
+  async handle(req: Request, res: Response): Promise<Response> {
+    const validation = validateZodCreateInstitution(req.body);
 
-      // Validação de dados obrigatórios
-      if (!institutionData.cnpj) {
-        return response.status(400).json({ error: "CNPJ é obrigatório" });
-      }
-
-      const result = await registerInstitutionUseCase.execute(institutionData);
-
-      return response.status(result.status).json(result.body);
-
-    } catch (error) {
-      console.error("Erro no controller de instituição:", error);
-      return response.status(500).json({ 
-        error: "Erro interno do servidor ao cadastrar instituição" 
-      });
+    if (!validation.success) {
+      throw new AppErrorsZod(validation.fieldErrors);
     }
+
+    const institution =
+      await registerInstitutionUseCase.execute(validation.data);
+
+    return res.status(201).json(institution);
   }
 }
 

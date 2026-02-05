@@ -3,14 +3,19 @@ import institutionRoutes from './routes/institution-routes.js';
 import cors from 'cors';
 import mongoose from 'mongoose'; 
 import 'dotenv/config';    
+import { globalErrorHandler } from "./middlewares/globalErrorHandler.js"
+import { setupSwagger } from "./swagger/index.js";
 
 const server = express();
 const port = process.env.PORT || 3333; 
 
 server.use(express.json());
 server.use(cors());
+setupSwagger(server);
 
 server.use('/institution', institutionRoutes);
+
+server.use(globalErrorHandler);
 
 const mongoUri = process.env.MONGO_URL;
 
