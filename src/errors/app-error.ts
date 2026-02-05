@@ -1,8 +1,11 @@
-export class AppError extends Error {
-  constructor(
-    message: string,
-    public statusCode = 400
-  ) {
-    super(message);
-  }
-}
+    export class AppError extends Error {
+    public readonly message: string;
+    public readonly statusCode: number;
+
+    constructor(message: string, statusCode: number) {
+        super(message);
+        this.message = message;
+        this.statusCode = statusCode;
+        Object.setPrototypeOf(this, AppError.prototype);
+    }
+    }

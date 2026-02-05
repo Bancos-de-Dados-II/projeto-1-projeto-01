@@ -1,25 +1,20 @@
 import type { Request, Response } from "express";
-import GetInstitutionByIdUseCase from "../domain/use-cases/get-by-id-institution.js";
+import getInstitutionByIdUseCase from "../domain/use-cases/get-by-id-institution.js";
+import { AppError } from "../errors/app-error.js";
+import mongoose from "mongoose";
 
 class GetInstitutionByIdController {
-    async handle(request: Request, response: Response): Promise<Response> {
-        try {
-            const { id } = request.params;
+  async handle(req: Request, res: Response): Promise<Response> {
+    const id = req.params.id as string;
 
-            if (typeof id === 'undefined') {
-            return response.status(400).json({ error: "ID da instituição é obrigatório." });
-            }
-
-            const result = await GetInstitutionByIdUseCase.execute(id);
-
-            return response.status(result.status).json(result.body);
-        } catch (error) {
-            console.error("Erro no controller de busca por ID:", error);
-            return response.status(500).json({
-                error: "Erro interno do servidor ao buscar instituição por ID",
-            });
-        }
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      throw new AppError("ID da instituição inválido.", 400);
     }
+
+    const result = await getInstitutionByIdUseCase.execute(id);
+
+    return res.status(result.status).json(result.body);
+  }
 }
 
 export default new GetInstitutionByIdController();

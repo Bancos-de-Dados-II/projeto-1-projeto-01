@@ -1,36 +1,54 @@
-import { z } from 'zod';
+import { z } from "zod";
 
-export const createInstitutionSchema = z.object({
-  name: z.string().min(3, 'Nome deve ter no mínimo 3 caracteres'),
+export const CreateInstitutionSchema = z.object({
+  name: z
+    .string("Nome é obrigatório")
+    .trim()
+    .min(2, "Nome deve ter no mínimo 2 caracteres"),
 
   cnpj: z
-    .string()
-    .length(14, 'CNPJ deve conter 14 números')
-    .regex(/^\d+$/, 'CNPJ deve conter apenas números'),
+    .string("CNPJ é obrigatório")
+    .min(14, "CNPJ inválido"),
 
-  email: z.string().email('Email inválido'),
+  email: z
+    .string("E-mail é obrigatório")
+    .email("E-mail inválido"),
 
-  phone: z.string().min(10, 'Telefone inválido'),
+  phone: z
+    .string("Telefone é obrigatório")
+    .min(8, "Telefone inválido"),
 
-  address: z.string().min(5, 'Endereço muito curto'),
+  address: z
+    .string("Endereço é obrigatório")
+    .min(5, "Endereço inválido"),
 
-  active: z.boolean().optional(),
+  active: z
+    .boolean()
+    .optional()
+    .default(true),
 
-  latitude: z
-    .number()
-    .min(-90, 'Latitude inválida')
-    .max(90, 'Latitude inválida'),
+  latitude: z.coerce
+    .number("Latitude é obrigatória"),
 
-  longitude: z
-    .number()
-    .min(-180, 'Longitude inválida')
-    .max(180, 'Longitude inválida'),
+  longitude: z.coerce
+    .number("Longitude é obrigatória"),
 });
 
-export type CreateInstitutionDTO = z.infer<typeof createInstitutionSchema>;
+export type CreateInstitutionDTO =
+  z.infer<typeof CreateInstitutionSchema>;
 
-export const updateInstitutionSchema =
-  createInstitutionSchema.partial();
-    
+export const UpdateInstitutionSchema =
+  CreateInstitutionSchema
+    .pick({
+      name: true,
+      email: true,
+      phone: true,
+      address: true,
+      active: true,
+      latitude: true,
+      longitude: true,
+    })
+    .partial();
+
 export type UpdateInstitutionDTO =
-  z.infer<typeof updateInstitutionSchema>;
+  z.infer<typeof UpdateInstitutionSchema>;
